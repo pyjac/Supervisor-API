@@ -24,5 +24,10 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
+        $this->app->bind(
+            'App\Contracts\ISupervisor', function ($app) {
+                return new \App\Services\Supervisor(new \PhpXmlRpc\Client(env('XML_RPC_SERVER')));
+            }
+        );
     }
 }
