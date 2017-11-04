@@ -20,3 +20,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/state', 'ApiController@state');
 Route::get('/api-version', 'ApiController@apiVersion');
 Route::get('/process-info/{name}', 'ApiController@processInfo');
+Route::post('/start-process', 'ApiController@startProcess');
