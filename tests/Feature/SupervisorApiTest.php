@@ -151,12 +151,67 @@ class SupervisorApiTest extends TestCase
         $response = $this->post('/api/start-process', [
             'name' => 'processname'
         ]);
+
         $response->assertJson([
             'status' => 'succuss',
             'data' => [
                 "started" => $started
             ]
         ]);
+    }
+
+    public function testStartProcessWithWaitFalseRoute()
+    {
+        $started = true;
+        $value = new Value($started, 'boolean');
+        $this->client->shouldReceive('send')->twice()->andReturn(new \PhpXmlRpc\Response($value));
+        
+        $response = $this->post('/api/start-process', [
+            'name' => 'processname',
+            'wait' => 'false'
+        ]);
+        
+        $expectedResponse = [
+            'status' => 'succuss',
+            'data' => [
+                "started" => $started
+            ]
+        ];
+        $response->assertJson($expectedResponse);
+
+        $response = $this->post('/api/start-process', [
+            'name' => 'processname',
+            'wait' => 'FALSE'
+        ]);
+
+        $response->assertJson($expectedResponse);
+    }
+
+    public function testStartProcessWithWaitTrueRoute()
+    {
+        $started = true;
+        $value = new Value($started, 'boolean');
+        $this->client->shouldReceive('send')->twice()->andReturn(new \PhpXmlRpc\Response($value));
+        
+        $response = $this->post('/api/start-process', [
+            'name' => 'processname',
+            'wait' => 'TRUE'
+        ]);
+        
+        $expectedResponse = [
+            'status' => 'succuss',
+            'data' => [
+                "started" => $started
+            ]
+        ];
+        $response->assertJson($expectedResponse);
+
+        $response = $this->post('/api/start-process', [
+            'name' => 'processname',
+            'wait' => 'true'
+        ]);
+
+        $response->assertJson($expectedResponse);
     }
 
     /**
