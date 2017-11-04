@@ -49,6 +49,7 @@ class ApiController extends Controller {
     /**
      * Returns the Process Information of the given process name.
      *
+     * @param string $name
      * @return \Illuminate\Http\Response
      */
     public function processInfo(string $name)
@@ -61,6 +62,7 @@ class ApiController extends Controller {
     /**
      * Starts a process on supervisor.
      *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function startProcess(Request $request)
@@ -98,6 +100,7 @@ class ApiController extends Controller {
     /**
      * Fetches Stdout Log information for the process.
      *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function processStdoutLog(Request $request)
@@ -117,6 +120,19 @@ class ApiController extends Controller {
         $length = $request->query('length');
       
         $result = $this->supervisor->processStdoutLog($name, $offset, $length);
+        
+        return \Response::json($result);
+    }
+
+    /**
+     * Requests to clear process logs.
+     *
+     * @param string $name
+     * @return \Illuminate\Http\Response
+     */
+    public function clearProcessLogs(string $name)
+    {
+        $result = $this->supervisor->clearProcessLogs($name);
         
         return \Response::json($result);
     }

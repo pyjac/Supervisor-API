@@ -12,6 +12,7 @@ use App\Responses\ApiVersionResponse;
 use App\Responses\ProcessInfoResponse;
 use App\Responses\StartProcessResponse;
 use App\Responses\ProcessStdoutLogResponse;
+use App\Responses\ClearProcessLogsResponse;
 
 
 class Supervisor implements ISupervisor {
@@ -97,6 +98,22 @@ class Supervisor implements ISupervisor {
             $encoder->encode($name), $encoder->encode($offset), $encoder->encode($length)
         ]));
         $response = new ProcessStdoutLogResponse($result);
+
+        return $response->response();
+    }
+
+    /**
+     * Reads clear process logs.
+     * 
+     * @param string $name
+     * @return array
+     */
+    public function clearProcessLogs(string $name) {
+        $encoder = new Encoder();
+        $result = $this->client->send(new Request('supervisor.clearProcessLogs', [
+            $encoder->encode($name)
+        ]));
+        $response = new ClearProcessLogsResponse($result);
 
         return $response->response();
     }

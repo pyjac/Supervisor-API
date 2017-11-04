@@ -22,3 +22,4 @@ Route::get('/api-version', 'ApiController@apiVersion');
 Route::get('/process-info/{name}', 'ApiController@processInfo');
 Route::post('/start-process', 'ApiController@startProcess');
 Route::get('/process-stdout-log', 'ApiController@processStdoutLog');
+Route::get('/clear-process-logs/{name}', 'ApiController@clearProcessLogs');
