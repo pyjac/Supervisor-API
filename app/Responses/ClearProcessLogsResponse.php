@@ -2,25 +2,12 @@
 
 namespace App\Responses;
 
-class ClearProcessLogsResponse extends SupervisorResponse {
-
+class ClearProcessLogsResponse extends ScalarValueResponse {
+    
     /**
-     * ClearProcessLogsResponse constructor
+     * Name of scalar value to put in data response
      * 
-     * @param \PhpXmlRpc\Value $responseValue
+     * @var string 
      */
-    public function __construct($responseValue) {
-        parent::__construct($responseValue);
-    }
-
-    /**
-     * The Response data
-     * 
-     * @return array
-     */
-    public function data() {
-        return [
-            'log_cleared' => $this->responseValue->value()->scalarval()
-        ];
-    }
+    protected $dataValueName = 'log_cleared';
 }

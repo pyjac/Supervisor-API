@@ -3,6 +3,7 @@
 namespace App\Responses;
 
 class ScalarValueResponse extends SupervisorResponse {
+    
     /**
      * Name of scalar value to put in data response
      * 

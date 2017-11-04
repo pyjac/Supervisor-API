@@ -3,16 +3,7 @@
 namespace App\Responses;
 
 class ProcessInfoResponse extends SupervisorResponse {
-
-    /**
-     * ProcessInfoResponse constructor
-     * 
-     * @param \PhpXmlRpc\Value $responseValue
-     */
-    public function __construct($responseValue) {
-        parent::__construct($responseValue);
-    }
-
+    
     /**
      * The Response data
      * 

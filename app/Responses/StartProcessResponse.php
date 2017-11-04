@@ -2,25 +2,12 @@
 
 namespace App\Responses;
 
-class StartProcessResponse extends SupervisorResponse {
-
+class StartProcessResponse extends ScalarValueResponse {
+    
     /**
-     * StartProcessResponse constructor
+     * Name of scalar value to put in data response
      * 
-     * @param \PhpXmlRpc\Value $responseValue
+     * @var string 
      */
-    public function __construct($responseValue) {
-        parent::__construct($responseValue);
-    }
-
-    /**
-     * The Response data
-     * 
-     * @return array
-     */
-    public function data() {
-        return [
-            'started' => $this->responseValue->value()->scalarval()
-        ];
-    }
+    protected $dataValueName = 'started';
 }

@@ -2,25 +2,12 @@
 
 namespace App\Responses;
 
-class ApiVersionResponse extends SupervisorResponse {
+class ApiVersionResponse extends ScalarValueResponse {
 
     /**
-     * ApiVersionResponse constructor
+     * Name of scalar value to put in data response
      * 
-     * @param \PhpXmlRpc\Value $responseValue
+     * @var string 
      */
-    public function __construct($responseValue) {
-        parent::__construct($responseValue);
-    }
-
-    /**
-     * The Response data
-     * 
-     * @return array
-     */
-    public function data() {
-        return [
-            'version' => $this->responseValue->value()->scalarval()
-        ];
-    }
+    protected $dataValueName = 'version';
 }

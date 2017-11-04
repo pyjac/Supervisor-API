@@ -3,6 +3,7 @@
 namespace App\Responses;
 
 abstract class SupervisorResponse {
+    
     /**
      * @var \PhpXmlRpc\Value
      */

@@ -2,25 +2,12 @@
 
 namespace App\Responses;
 
-class ProcessStdoutLogResponse extends SupervisorResponse {
-
+class ProcessStdoutLogResponse extends ScalarValueResponse {
+    
     /**
-     * ProcessStdoutLogResponse constructor
+     * Name of scalar value to put in data response
      * 
-     * @param \PhpXmlRpc\Value $responseValue
+     * @var string 
      */
-    public function __construct($responseValue) {
-        parent::__construct($responseValue);
-    }
-
-    /**
-     * The Response data
-     * 
-     * @return array
-     */
-    public function data() {
-        return [
-            'stdoutlog' => $this->responseValue->value()->scalarval()
-        ];
-    }
+    protected $dataValueName = 'stdoutlog';
 }
