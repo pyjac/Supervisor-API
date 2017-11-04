@@ -136,4 +136,17 @@ class ApiController extends Controller {
         
         return \Response::json($result);
     }
+
+    /**
+     * Requests method help.
+     *
+     * @param string $name
+     * @return \Illuminate\Http\Response
+     */
+    public function methodHelp(string $name)
+    {
+        $result = $this->supervisor->methodHelp($name);
+        
+        return \Response::json($result);
+    }
 }

@@ -9,6 +9,7 @@ use PhpXmlRpc\Encoder;
 use App\Contracts\ISupervisor;
 use App\Responses\StateResponse;
 use App\Responses\ApiVersionResponse;
+use App\Responses\MethodHelpResponse;
 use App\Responses\ProcessInfoResponse;
 use App\Responses\StartProcessResponse;
 use App\Responses\ProcessStdoutLogResponse;
@@ -114,6 +115,24 @@ class Supervisor implements ISupervisor {
             $encoder->encode($name)
         ]));
         $response = new ClearProcessLogsResponse($result);
+
+        return $response->response();
+    }
+
+    /**
+     * Gets the method help.
+     * 
+     * @param string $name
+     * @return array
+     */
+    public function methodHelp(string $name) {
+        $encoder = new Encoder();
+        
+        $result = $this->client->send(new Request('system.methodHelp', [
+            $encoder->encode($name)
+        ]));
+
+        $response = new MethodHelpResponse($result);
 
         return $response->response();
     }
