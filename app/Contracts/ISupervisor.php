@@ -10,4 +10,11 @@ interface ISupervisor {
      * @return array
      */
     public function state();
+
+    /**
+     * Fetches the supervisor api version
+     * 
+     * @return array
+     */
+    public function apiVersion();
 }

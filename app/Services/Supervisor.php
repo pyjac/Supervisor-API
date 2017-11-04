@@ -37,4 +37,16 @@ class Supervisor implements ISupervisor {
 
         return $response->response();
     }
+
+    /**
+     * Fetches the API version of the supervisor
+     * 
+     * @return array
+     */
+    public function apiVersion() {
+        $result = $this->client->send(new Request('supervisor.getAPIVersion'));
+        $response = new ApiVersionResponse($result);
+
+        return $response->response();
+    }
 }

@@ -18,4 +18,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/state', 'ApiController@state');
-
+Route::get('/api-version', 'ApiController@apiVersion');

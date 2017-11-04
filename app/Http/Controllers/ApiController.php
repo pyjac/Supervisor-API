@@ -32,4 +32,16 @@ class ApiController extends Controller {
     {
         return \Response::json($this->supervisor->state());
     }
+
+    /**
+     * Returns the api version of the Supervisor
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function apiVersion()
+    {
+        $result = $this->supervisor->apiVersion();
+
+        return \Response::json($result);
+    }
 }
