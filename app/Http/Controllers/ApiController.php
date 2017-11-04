@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use \Illuminate\Http\Request;
 use App\Contracts\ISupervisor;
 use App\Http\Response\ApiVersionResponse;
 
@@ -53,6 +54,43 @@ class ApiController extends Controller {
     public function processInfo(string $name)
     {
         $result = $this->supervisor->processInfo($name);
+        
+        return \Response::json($result);
+    }
+
+    /**
+     * Starts a process on supervisor.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function startProcess(Request $request)
+    {
+        if (!$request->has('name')) {
+
+            return \Response::json([
+                'status' => 'error',
+                'error' => [
+                    'message' => 'Process name is required'
+                ]
+             ]);
+        }
+
+        $name = $request->input('name');
+        $wait = $request->input('wait', 'TRUE');
+        switch($wait) {
+            case 'true':
+            case 'True':
+                $wait = true;
+                break;
+            case 'false':
+            case 'FALSE':
+                $wait = false;
+                break;
+            default:
+                $wait = true;
+        }
+        
+        $result = $this->supervisor->startProcess($name, $wait);
         
         return \Response::json($result);
     }

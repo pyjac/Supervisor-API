@@ -10,6 +10,7 @@ use App\Contracts\ISupervisor;
 use App\Responses\StateResponse;
 use App\Responses\ApiVersionResponse;
 use App\Responses\ProcessInfoResponse;
+use App\Responses\StartProcessResponse;
 
 
 class Supervisor implements ISupervisor {
@@ -59,6 +60,21 @@ class Supervisor implements ISupervisor {
         $encoder = new Encoder();
         $result = $this->client->send(new Request('supervisor.getProcessInfo', [$encoder->encode($name)]));
         $response = new ProcessInfoResponse($result);
+
+        return $response->response();
+    }
+
+    /**
+     * Starts the process name.
+     * 
+     * @return array
+     */
+    public function startProcess(string $name, $wait) {
+        $encoder = new Encoder();
+        $result = $this->client->send(new Request('supervisor.startProcess', [
+            $encoder->encode($name), $encoder->encode($wait)
+        ]));
+        $response = new StartProcessResponse($result);
 
         return $response->response();
     }

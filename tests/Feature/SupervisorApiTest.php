@@ -140,6 +140,45 @@ class SupervisorApiTest extends TestCase
     }
 
     /**
+     * Test start process response with expected result.
+     *
+     * @return void
+     */
+    public function testStartProcessRoute()
+    {
+        $started = true;
+        $value = new Value($started, 'boolean');
+        $this->client->shouldReceive('send')->once()->andReturn(new \PhpXmlRpc\Response($value));
+        app()->instance('App\Contracts\ISupervisor', $this->supervisor);
+        
+        $response = $this->post('/api/start-process', [
+            'name' => 'processname'
+        ]);
+        $response->assertJson([
+            'status' => 'succuss',
+            'data' => [
+                "started" => $started
+            ]
+        ]);
+    }
+
+    /**
+     * Test start process route fails with expected result.
+     *
+     * @return void
+     */
+    public function testStartProcessRouteReturnsErrorWhenProcessNameNotProvided()
+    {
+        $response = $this->post('/api/start-process', []);
+        $response->assertJson([
+            'status' => 'error',
+            'error' => [
+                "message" => 'Process name is required'
+            ]
+        ]);
+    }
+
+    /**
      * Destruction
      * 
      * @return void
