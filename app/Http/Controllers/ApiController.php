@@ -94,4 +94,30 @@ class ApiController extends Controller {
         
         return \Response::json($result);
     }
+
+    /**
+     * Fetches Stdout Log information for the process.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function processStdoutLog(Request $request)
+    {
+        if (!$request->has('name') || !$request->has('offset') || !$request->has('length')) {
+
+            return \Response::json([
+                'status' => 'error',
+                'error' => [
+                    'message' => 'Process name, offset, and length are all required together'
+                ]
+             ]);
+        }
+
+        $name = $request->query('name');
+        $offset = $request->query('offset');
+        $length = $request->query('length');
+      
+        $result = $this->supervisor->processStdoutLog($name, $offset, $length);
+        
+        return \Response::json($result);
+    }
 }

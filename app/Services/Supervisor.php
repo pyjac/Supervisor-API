@@ -11,6 +11,7 @@ use App\Responses\StateResponse;
 use App\Responses\ApiVersionResponse;
 use App\Responses\ProcessInfoResponse;
 use App\Responses\StartProcessResponse;
+use App\Responses\ProcessStdoutLogResponse;
 
 
 class Supervisor implements ISupervisor {
@@ -54,6 +55,7 @@ class Supervisor implements ISupervisor {
     /**
      * Fetches the process information a managed process name.
      * 
+     * @param string $name
      * @return array
      */
     public function processInfo(string $name) {
@@ -67,6 +69,8 @@ class Supervisor implements ISupervisor {
     /**
      * Starts the process name.
      * 
+     * @param string $name
+     * @param bool $wait
      * @return array
      */
     public function startProcess(string $name, $wait) {
@@ -75,6 +79,24 @@ class Supervisor implements ISupervisor {
             $encoder->encode($name), $encoder->encode($wait)
         ]));
         $response = new StartProcessResponse($result);
+
+        return $response->response();
+    }
+
+    /**
+     * Reads Stdout Log.
+     * 
+     * @param string $name
+     * @param bool $offset
+     * @param bool $length
+     * @return array
+     */
+    public function processStdoutLog($name, $offset, $length) {
+        $encoder = new Encoder();
+        $result = $this->client->send(new Request('supervisor.readProcessStdoutLog', [
+            $encoder->encode($name), $encoder->encode($offset), $encoder->encode($length)
+        ]));
+        $response = new ProcessStdoutLogResponse($result);
 
         return $response->response();
     }
