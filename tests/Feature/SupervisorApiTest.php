@@ -179,6 +179,61 @@ class SupervisorApiTest extends TestCase
     }
 
     /**
+     * Test start process stdoutlog with expected result.
+     *
+     * @return void
+     */
+    public function testProcessStdOutLogRoute()
+    {
+        $stdoutLog = 'some log information';
+        $value = new Value($stdoutLog);
+        $this->client->shouldReceive('send')->once()->andReturn(new \PhpXmlRpc\Response($value));
+        app()->instance('App\Contracts\ISupervisor', $this->supervisor);
+        
+        $response = $this->get('/api/process-stdout-log?name=processname&length=10&offset=10');
+        $response->assertJson([
+            'status' => 'succuss',
+            'data' => [
+                'stdoutlog' => $stdoutLog
+            ]
+        ]);
+    }
+
+
+    public function testProcessStdOutLogReturnErrorWhenNameNotProvided()
+    {
+        $response = $this->get('/api/process-stdout-log?length=10&offset=10');
+        $response->assertJson([
+            'status' => 'error',
+            'error' => [
+                'message' => 'Process name, offset, and length are all required together'
+            ]
+        ]);
+    }
+
+    public function testProcessStdOutLogReturnErrorWhenLengthNotProvided()
+    {
+        $response = $this->get('/api/process-stdout-log?name=som&offset=10');
+        $response->assertJson([
+            'status' => 'error',
+            'error' => [
+                'message' => 'Process name, offset, and length are all required together'
+            ]
+        ]);
+    }
+
+    public function testProcessStdOutLogReturnErrorWhenOffetNotProvided()
+    {
+        $response = $this->get('/api/process-stdout-log?name=som&length=10');
+        $response->assertJson([
+            'status' => 'error',
+            'error' => [
+                'message' => 'Process name, offset, and length are all required together'
+            ]
+        ]);
+    }
+
+    /**
      * Destruction
      * 
      * @return void
