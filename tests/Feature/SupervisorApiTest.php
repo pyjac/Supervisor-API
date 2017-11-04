@@ -55,12 +55,33 @@ class SupervisorApiTest extends TestCase
         
         $response = $this->get('/api/state');
         $response->assertJson([
-                'status' => 'succuss',
-                'data' => [
-                    "statename" => "RUNNING",
-                    "statecode" => 1
-                ]
-            ]);
+            'status' => 'succuss',
+            'data' => [
+                "statename" => "RUNNING",
+                "statecode" => 1
+            ]
+        ]);
+    }
+
+    /**
+     * Test api version response with expected result.
+     *
+     * @return void
+     */
+    public function testApiVersionRoute()
+    {
+        $apiVersion = '3.3.0';
+        $value = new Value($apiVersion);
+        $this->client->shouldReceive('send')->once()->andReturn(new \PhpXmlRpc\Response($value));
+        app()->instance('App\Contracts\ISupervisor', $this->supervisor);
+        
+        $response = $this->get('/api/api-version');
+        $response->assertJson([
+            'status' => 'succuss',
+            'data' => [
+                "version" => $apiVersion
+            ]
+        ]);
     }
 
     /**
