@@ -34,6 +34,7 @@ class SupervisorApiTest extends TestCase
         parent::setup();
         $this->client =  m::mock('\PhpXmlRpc\Client');
         $this->supervisor = new Supervisor($this->client);
+        app()->instance('App\Contracts\ISupervisor', $this->supervisor);
     }
 
     /**
@@ -51,7 +52,6 @@ class SupervisorApiTest extends TestCase
             "struct"
         );
         $this->client->shouldReceive('send')->once()->andReturn(new \PhpXmlRpc\Response($value));
-        app()->instance('App\Contracts\ISupervisor', $this->supervisor);
         
         $response = $this->get('/api/state');
         $response->assertJson([
@@ -73,7 +73,6 @@ class SupervisorApiTest extends TestCase
         $apiVersion = '3.3.0';
         $value = new Value($apiVersion);
         $this->client->shouldReceive('send')->once()->andReturn(new \PhpXmlRpc\Response($value));
-        app()->instance('App\Contracts\ISupervisor', $this->supervisor);
         
         $response = $this->get('/api/api-version');
         $response->assertJson([
@@ -115,7 +114,6 @@ class SupervisorApiTest extends TestCase
         );
 
         $this->client->shouldReceive('send')->once()->andReturn(new \PhpXmlRpc\Response($value));
-        app()->instance('App\Contracts\ISupervisor', $this->supervisor);
         
         $response = $this->get('/api/process-info/someprocess');
         $response->assertJson([
@@ -149,7 +147,6 @@ class SupervisorApiTest extends TestCase
         $started = true;
         $value = new Value($started, 'boolean');
         $this->client->shouldReceive('send')->once()->andReturn(new \PhpXmlRpc\Response($value));
-        app()->instance('App\Contracts\ISupervisor', $this->supervisor);
         
         $response = $this->post('/api/start-process', [
             'name' => 'processname'
@@ -188,7 +185,6 @@ class SupervisorApiTest extends TestCase
         $stdoutLog = 'some log information';
         $value = new Value($stdoutLog);
         $this->client->shouldReceive('send')->once()->andReturn(new \PhpXmlRpc\Response($value));
-        app()->instance('App\Contracts\ISupervisor', $this->supervisor);
         
         $response = $this->get('/api/process-stdout-log?name=processname&length=10&offset=10');
         $response->assertJson([
@@ -245,7 +241,6 @@ class SupervisorApiTest extends TestCase
         $value = new Value($someValue, 'boolean');
 
         $this->client->shouldReceive('send')->once()->andReturn(new \PhpXmlRpc\Response($value));
-        app()->instance('App\Contracts\ISupervisor', $this->supervisor);
         
         $response = $this->get('/api/clear-process-logs/theprogramname');
         $response->assertJson([
@@ -268,7 +263,6 @@ class SupervisorApiTest extends TestCase
         $value = new Value($someValue);
 
         $this->client->shouldReceive('send')->once()->andReturn(new \PhpXmlRpc\Response($value));
-        app()->instance('App\Contracts\ISupervisor', $this->supervisor);
         
         $response = $this->get('/api/method-help/somevalidSupervisorMethod');
         $response->assertJson([
