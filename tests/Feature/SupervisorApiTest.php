@@ -62,4 +62,15 @@ class SupervisorApiTest extends TestCase
                 ]
             ]);
     }
+
+    /**
+     * Destruction
+     * 
+     * @return void
+     */
+    public function tearDown()
+    {
+        m::close();
+        parent::tearDown();
+    }
 }
