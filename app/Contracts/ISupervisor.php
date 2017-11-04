@@ -17,4 +17,12 @@ interface ISupervisor {
      * @return array
      */
     public function apiVersion();
+
+    /**
+     * Fetches the information of the process name
+     * 
+     * @param string $name
+     * @return array
+     */
+    public function processInfo(string $name);
 }

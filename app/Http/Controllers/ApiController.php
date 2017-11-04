@@ -44,4 +44,16 @@ class ApiController extends Controller {
 
         return \Response::json($result);
     }
+
+    /**
+     * Returns the Process Information of the given process name.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function processInfo(string $name)
+    {
+        $result = $this->supervisor->processInfo($name);
+        
+        return \Response::json($result);
+    }
 }
