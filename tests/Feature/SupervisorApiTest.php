@@ -85,6 +85,61 @@ class SupervisorApiTest extends TestCase
     }
 
     /**
+     * Test process information response with expected result.
+     *
+     * @return void
+     */
+    public function testProcessInformationRoute()
+    {
+        $someValue = 'Some Value';
+        $someInt = 1323;
+
+        $value = new Value(
+            [
+                'description' => new Value($someValue),
+                'pid' => new Value($someInt, 'int'),
+                'stderr_logfile' => new Value($someValue),
+                'stop' => new Value($someInt, 'int'),
+                'logfile' => new Value($someValue),
+                'exitstatus' => new Value($someInt, 'int'),
+                'spawnerr' => new Value($someValue),
+                'now' => new Value($someInt, 'int'),
+                'group' => new Value($someValue),
+                'name' => new Value($someValue),
+                'statename' => new Value($someValue),
+                'start' => new Value($someInt, 'int'),
+                'state' => new Value($someInt, 'int'),
+                'stdout_logfile' => new Value($someValue) 
+            ],
+            "struct"
+        );
+
+        $this->client->shouldReceive('send')->once()->andReturn(new \PhpXmlRpc\Response($value));
+        app()->instance('App\Contracts\ISupervisor', $this->supervisor);
+        
+        $response = $this->get('/api/process-info/someprocess');
+        $response->assertJson([
+            'status' => 'succuss',
+            'data' => [
+                'description' => $someValue,
+                'pid' => $someInt,
+                'stderr_logfile' => $someValue,
+                'stop' => $someInt,
+                'logfile' => $someValue,
+                'exitstatus' => $someInt,
+                'spawnerr' => $someValue,
+                'now' => $someInt,
+                'group' => $someValue,
+                'name' => $someValue,
+                'statename' => $someValue,
+                'start' => $someInt,
+                'state' => $someInt,
+                'stdout_logfile' => $someValue 
+            ]
+        ]);
+    }
+
+    /**
      * Destruction
      * 
      * @return void
