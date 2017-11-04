@@ -257,6 +257,29 @@ class SupervisorApiTest extends TestCase
     }
 
     /**
+     * Test method help with expected result.
+     *
+     * @return void
+     */
+    public function testMethodHelpRoute()
+    {
+        $someValue = 'some method description';
+
+        $value = new Value($someValue);
+
+        $this->client->shouldReceive('send')->once()->andReturn(new \PhpXmlRpc\Response($value));
+        app()->instance('App\Contracts\ISupervisor', $this->supervisor);
+        
+        $response = $this->get('/api/method-help/somevalidSupervisorMethod');
+        $response->assertJson([
+            'status' => 'succuss',
+            'data' => [
+                'method_help' => $someValue
+            ]
+        ]);
+    }
+
+    /**
      * Destruction
      * 
      * @return void
