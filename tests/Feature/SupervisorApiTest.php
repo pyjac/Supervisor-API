@@ -257,7 +257,7 @@ class SupervisorApiTest extends TestCase
         $response->assertJson([
             'status' => 'error',
             'error' => [
-                'message' => 'Process name, offset, and length are all required together'
+                'message' => 'Process name is required'
             ]
         ]);
     }
@@ -268,7 +268,7 @@ class SupervisorApiTest extends TestCase
         $response->assertJson([
             'status' => 'error',
             'error' => [
-                'message' => 'Process name, offset, and length are all required together'
+                'message' => 'The length field is required.'
             ]
         ]);
     }
@@ -279,7 +279,7 @@ class SupervisorApiTest extends TestCase
         $response->assertJson([
             'status' => 'error',
             'error' => [
-                'message' => 'Process name, offset, and length are all required together'
+                'message' => 'The offset field is required.'
             ]
         ]);
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use \Illuminate\Http\Request;
 use App\Contracts\ISupervisor;
 use App\Http\Response\ApiVersionResponse;
@@ -67,14 +68,16 @@ class ApiController extends Controller {
      */
     public function startProcess(Request $request)
     {
-        if (!$request->has('name')) {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255',
+            'wait' => 'string|max:255',
+        ], [
+            'name.required' => 'Process name is required'
+        ]);
 
-            return \Response::json([
-                'status' => 'error',
-                'error' => [
-                    'message' => 'Process name is required'
-                ]
-             ]);
+        if ($validator->fails()) {
+            $error = $validator->errors()->first();
+            return $this->errorResponse($error);
         }
 
         $name = $request->input('name');
@@ -105,14 +108,17 @@ class ApiController extends Controller {
      */
     public function processStdoutLog(Request $request)
     {
-        if (!$request->has('name') || !$request->has('offset') || !$request->has('length')) {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255',
+            'offset' => 'required|integer',
+            'length' => 'required|integer',
+        ], [
+            'name.required' => 'Process name is required',
+        ]);
 
-            return \Response::json([
-                'status' => 'error',
-                'error' => [
-                    'message' => 'Process name, offset, and length are all required together'
-                ]
-             ]);
+        if ($validator->fails()) {
+            $error = $validator->errors()->first();
+            return $this->errorResponse($error);
         }
 
         $name = $request->query('name');
@@ -148,5 +154,20 @@ class ApiController extends Controller {
         $result = $this->supervisor->methodHelp($name);
         
         return \Response::json($result);
+    }
+
+    /**
+     * Requests method help.
+     *
+     * @param string $message
+     * @return \Illuminate\Http\Response
+     */
+    private function errorResponse(string $message) {
+        return \Response::json([
+            'status' => 'error',
+            'error' => [
+                'message' => $message
+            ]
+        ]);
     }
 }
